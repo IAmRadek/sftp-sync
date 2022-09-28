@@ -93,6 +93,10 @@ func run() {
 		go func(src, dst string) {
 			defer func() { <-semaphore }()
 			defer wg.Done()
+			
+			if _, err := os.Stat(dst); err == nil {
+				return
+			}
 
 			err := downloadFile(c, src, dst)
 			if err != nil {
